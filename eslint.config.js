@@ -16,11 +16,13 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
+	prettier,
+	...storybook.configs['flat/recommended'],
 	...ts.configs.recommended,
 	...svelte.configs.recommended,
-	prettier,
 	...svelte.configs.prettier,
 	{
+	    ignores: ['!.storybook'],
 		languageOptions: { globals: { ...globals.browser, ...globals.node } },
 
 		rules: {
@@ -40,5 +42,14 @@ export default defineConfig(
 				svelteConfig
 			}
 		}
+	},
+	{
+		"overrides": [
+		  {
+			// or whatever matches stories specified in .storybook/main.js
+			"files": ['**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+			"rules": {}
+		  }
+		]
 	}
 );
